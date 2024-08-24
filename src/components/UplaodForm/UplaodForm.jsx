@@ -1,37 +1,45 @@
 import { useState } from "react";
 import Robot from "../../assets/images/robot.png";
+import { PacmanLoader} from "react-spinners";
+
 
 function UploadForm() {
   const [teamName, setTeamName] = useState("");
   const [users, setUsers] = useState([{ name: "", email: "" }]);
   const [documentFile, setDocumentFile] = useState(null);
   const [preview, setPreview] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true); // Show loading image when submit is clicked
 
-    // Create a new FormData object
     const formData = new FormData();
     formData.append("team_name", teamName);
     formData.append("users", JSON.stringify(users));
     formData.append("document", documentFile);
 
     try {
-      // Use fetch API to send the POST request
-      const response = await fetch("/summarize", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://minutemind-api-production.up.railway.app/api/summarize",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
-      // Check if the request was successful
-      if (response.ok) {
+      if (!response.ok) {
+        const errorDetails = await response.text(); 
+        console.error(`Failed to submit: ${response.status} - ${errorDetails}`);
+        alert(`Error: ${response.status} - ${response.statusText}`);
+      } else {
         const data = await response.json();
         console.log("Response:", data);
-      } else {
-        console.error("Failed to submit:", response.statusText);
       }
     } catch (error) {
       console.error("Error:", error);
+    } finally {
+      setIsLoading(false); 
     }
   };
 
@@ -51,8 +59,15 @@ function UploadForm() {
   };
 
   return (
-    <div className='flex items-center justify-center min-h-screen bg-gray-100'>
-      <div className='grid md:grid-cols-2 grid-cols-1'>
+    <div className='relative flex items-center justify-center min-h-screen bg-gray-100'>
+    {/* loading icon section  */}
+      {isLoading && (
+        <div className='absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-10'>
+         <PacmanLoader size={28} color='#3949AB' /> 
+        </div>
+      )}
+
+      <div className='grid md:grid-cols-2 grid-cols-1 relative z-0'>
         <div className='bg-indigo-700 shadow-lg border border-gray-300 p-6 max-w-md justify-center items-center flex'>
           <img src={Robot} alt='Robot' />
         </div>
