@@ -1,10 +1,11 @@
 import React from 'react'
+import UploadForm from './components/UplaodForm/UplaodForm'
 
 function App() {
   return (
-    <h1 className="text-3xl font-bold underline text-teal-700">
-   MinuttMind-API Project start
-  </h1>
+   <div>
+    <UploadForm/>
+   </div>
 
   )
 }
