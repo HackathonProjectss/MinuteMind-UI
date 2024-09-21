@@ -24,6 +24,7 @@ function UploadForm() {
     try {
       const response = await fetch(
         "https://minutemind-api-production.up.railway.app/api/summarize",
+        // "http://localhost:8000/api/summarize",
         {
           method: "POST",
           headers: {
@@ -207,39 +208,42 @@ function UploadForm() {
 
 const MeetingSummary = ({ data }) => {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="bg-white shadow-xl rounded-lg overflow-hidden">
-        <div className="bg-indigo-600 px-6 py-4">
-          <h2 className="text-2xl font-bold text-white">Meeting Summary</h2>
-        </div>
-        <div className="px-6 py-4">
-          <p className="text-gray-700 text-base">{data.summary}</p>
-        </div>
-      </div>
-
-      <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {data.action_items.map((item, index) => (
-          <div key={index} className="bg-white shadow-xl rounded-lg overflow-hidden">
-            <div className="bg-pink-600 px-6 py-4">
-              <h3 className="text-xl font-bold text-white">{item.user.name}</h3>
-              <p className="text-pink-200">{item.user.email}</p>
-            </div>
-            <div className="px-6 py-4">
-              <ul className="space-y-2">
-                {item.action_items.split('\n').filter(line => line.trim().startsWith('- [')).map((action, actionIndex) => (
-                  <li key={actionIndex} className="flex items-start">
-                    {action.includes('[ ]') ? (
-                      <FaSquare className="text-gray-400 mt-1 mr-2 flex-shrink-0" />
-                    ) : (
-                      <FaCheckSquare className="text-green-500 mt-1 mr-2 flex-shrink-0" />
-                    )}
-                    <span className="text-gray-700">{action.replace(/- \[[ x]\] /, '')}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-700 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl overflow-hidden shadow-2xl">
+          <div className="bg-indigo-600 bg-opacity-75 px-6 py-4">
+            <h2 className="text-3xl font-bold text-white">Meeting Summary</h2>
           </div>
-        ))}
+          <div className="px-6 py-6">
+            <p className="text-white text-lg leading-relaxed">{data.summary}</p>
+          </div>
+        </div>
+
+        <h3 className="text-2xl font-bold text-white mt-12 mb-6">Action Items</h3>
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {data.action_items.map((item, index) => (
+            <div key={index} className="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl overflow-hidden shadow-xl transition-transform duration-300 hover:scale-105">
+              <div className="bg-pink-600 bg-opacity-75 px-6 py-4">
+                <h3 className="text-xl font-bold text-white">{item.user.name}</h3>
+                <p className="text-pink-200">{item.user.email}</p>
+              </div>
+              <div className="px-6 py-4">
+                <ul className="space-y-3">
+                  {item.action_items.split('\n').filter(line => line.trim().startsWith('- [')).map((action, actionIndex) => (
+                    <li key={actionIndex} className="flex items-start">
+                      {action.includes('[ ]') ? (
+                        <FaSquare className="text-pink-300 mt-1 mr-3 flex-shrink-0" />
+                      ) : (
+                        <FaCheckSquare className="text-green-400 mt-1 mr-3 flex-shrink-0" />
+                      )}
+                      <span className="text-white">{action.replace(/- \[[ x]\] /, '')}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
