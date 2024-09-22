@@ -9,10 +9,14 @@ function App() {
     <div className='min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100'>
       <header className='bg-white shadow-sm'>
         <div className='max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center'>
-          <div className='flex  justify-center items-center cursor-pointer'>
-            <img src={Logo} alt='logo' className='w-10  h-auto' />
-            <h1 className='text-3xl font-bold text-indigo-600'>MinuteMind</h1>
-          </div>
+          <a href='/'>
+            <div className='flex gap-3 justify-center items-center cursor-pointer'>
+              <img src={Logo} alt='logo' className='w-10  h-auto' />
+              <h1 className='md:text-3xl text-2xl font-bold text-indigo-600'>
+                MinuteMind
+              </h1>
+            </div>
+          </a>
           <button
             onClick={() => setShowUpload(true)}
             className='px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
